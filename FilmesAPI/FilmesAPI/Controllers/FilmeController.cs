@@ -13,12 +13,11 @@ public class FilmeController : ControllerBase
 
     //HttpPost serve para a ação 'Post', que adiciona o filme que recebemos por parametro.
     [HttpPost]
-    public void AdicionaFilme([FromBody] Filme filme)
+    public IActionResult AdicionaFilme([FromBody] Filme filme)
     {
-            filme.ID = id++; 
-            filmes.Add(filme);
-            Console.WriteLine(filme.Titulo);
-            Console.WriteLine(filme.Duracao);
+        filme.ID = id++; 
+        filmes.Add(filme);
+        return CreatedAtAction(nameof(BuscaFilmePorId), new { id = filme.ID }, filme);
     }
 
     [HttpGet]
@@ -28,8 +27,12 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet("{id}")] //Para diferenciar do GET de cima, pois este requere um parametro
-    public Filme? BuscaFilmePorId(int id)
+    public IActionResult BuscaFilmePorId(int id)
     {
-       return filmes.FirstOrDefault(filme => filme.ID == id);
+        var filme = filmes.FirstOrDefault(filme => filme.ID == id);
+
+        if(filme == null) return NotFound();
+
+        return Ok();
     }
 }
