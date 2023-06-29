@@ -1,4 +1,5 @@
-﻿using FilmesAPI.Models;
+﻿using FilmesAPI.Data;
+using FilmesAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmesAPI.Controllers;
@@ -7,32 +8,36 @@ namespace FilmesAPI.Controllers;
 [Route ("[controller]")]
 public class FilmeController : ControllerBase
 {
-    private static List<Filme> filmes = new List<Filme>();
-    private static int id = 0;
 
+    private FilmeContext _context;
+
+    public FilmeController(FilmeContext context)
+    {
+        _context = context;
+    }
 
     //HttpPost serve para a ação 'Post', que adiciona o filme que recebemos por parametro.
     [HttpPost]
-    public IActionResult AdicionaFilme([FromBody] Filme filme)
+    public IActionResult AdicionarFilme([FromBody] Filme filme)
     {
-        filme.ID = id++; 
-        filmes.Add(filme);
-        return CreatedAtAction(nameof(BuscaFilmePorId), new { id = filme.ID }, filme);
+        _context.Filmes.Add(filme);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(BuscarFilmePorId), new { id = filme.ID }, filme);
     }
 
     [HttpGet]
     public IEnumerable<Filme> VisualizarFilmes([FromQuery]int skip = 0, [FromQuery]int take = 50) //IEnumerable deixa o método mais abstrato, e torna uma futura mudança do List indiferente.
     {
-        return filmes.Skip(skip).Take(take);
+        return _context.Filmes.Skip(skip).Take(take);
     }
 
     [HttpGet("{id}")] //Para diferenciar do GET de cima, pois este requere um parametro
-    public IActionResult BuscaFilmePorId(int id)
+    public IActionResult BuscarFilmePorId(int id)
     {
-        var filme = filmes.FirstOrDefault(filme => filme.ID == id);
+        var filme = _context.Filmes.FirstOrDefault(filme => filme.ID == id);
 
         if(filme == null) return NotFound();
 
-        return Ok();
+        return Ok(filme);
     }
 }
