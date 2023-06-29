@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("FilmeConnection");
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //Utiliza a extensão AutoMapper e a inicializa
+
 builder.Services.AddDbContext<FilmeContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
