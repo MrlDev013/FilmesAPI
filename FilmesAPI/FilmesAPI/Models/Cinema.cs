@@ -10,4 +10,6 @@ public class Cinema
 
     [Required(ErrorMessage ="O campo de nome é obrigatório!")]
     public string NomeCinema { get; set; }
+    public int EnderecoID { get; set; }
+    public virtual Endereco Endereco { get; set; } //Gera o relacionamento 1-1 no banco, entre Cinema e Endereco.
 }

@@ -6,4 +6,5 @@ public class CreateCinemaDto
 {
     [Required(ErrorMessage = "O campo de nome é obrigatório!")]
     public string NomeCinema { get; set; }
+    public int EnderecoId { get; set; }
 }

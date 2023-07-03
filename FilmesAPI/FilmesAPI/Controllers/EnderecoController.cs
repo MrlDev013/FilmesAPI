@@ -25,7 +25,7 @@ namespace FilmesAPI.Controllers
             Endereco endereco = _mapper.Map<Endereco>(enderecoDto);
             _context.Enderecos.Add(endereco);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(BuscaEnderecoPorId), new { id = endereco.Id }, enderecoDto);
+            return CreatedAtAction(nameof(BuscarEnderecoPorId), new { id = endereco.Id }, enderecoDto);
         }
 
         [HttpGet]

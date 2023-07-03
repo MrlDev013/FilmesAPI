@@ -13,5 +13,6 @@ namespace FilmesAPI.Models
 
         [Required(ErrorMessage ="O número do endereço é obrigatório")]
         public int Numero { get; set; }
+        public virtual Cinema Cinema { get; set; }
     }
 }
