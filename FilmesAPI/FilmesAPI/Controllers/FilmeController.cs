@@ -11,7 +11,6 @@ namespace FilmesAPI.Controllers;
 [Route ("[controller]")]
 public class FilmeController : ControllerBase
 {
-
     private FilmeContext _context;
     private IMapper _mapper;
 
